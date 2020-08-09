@@ -1,0 +1,19 @@
+.login {
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    background-color: black;
+}
+
+.login > img {
+    width: 400px; /* width: 100%; hace que la imagen ocupe el 100% de la vista, es responsive*/
+}
+
+.login > a {
+    color: white;
+    background-color: #1db954;
+    padding: 20px;
+    border-radius: 99px; /*para que tome la forma ovalosa*/
+    font-weight: 800; /*para que sea bold*/
+    text-decoration: none; /* evitar el underlineado*/
+}
