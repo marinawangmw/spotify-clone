@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Login from './Login';
+import Player from './Player';
 import SpotifyApi from 'spotify-web-api-js';
+import { useStateValue } from './StateProvider';
+import { getTokenFromResponse } from './spotify';
 
 import './App.css';
-import { getTokenFromResponse } from './spotify';
 
 const spotify = new SpotifyApi()
 
 function App() {
 
-  const [token, setToken] = useState(null); //estado
+  // { pull a state out } 
+  const[{ token },dispatch] = useStateValue();
 
   // esto me deja correr un codigo cuando algo pase
   // ahora lo estoy dejando para que corra al montar la app
@@ -20,14 +23,21 @@ function App() {
     // para que no muestre el token por el url
     window.location.hash = "";
     const _token = hash.access_token; 
-    //_ var temporal != estado
 
     if(_token) {
-      setToken(_token);
-      //mas seguridad p/ las idas y vueltas
+      // comunicacion segura con el api
       spotify.setAccessToken(_token);
-      spotify.getMe().then(user => {
-        console.log('show me the user: ', user);
+      dispatch({
+        type: 'SET_TOKEN',
+        token: _token
+      })
+
+
+      spotify.getMe().then((user) => {
+        dispatch ({
+          type: 'SET_USER',
+          user
+        })
       })
     }
 
@@ -37,7 +47,7 @@ function App() {
     <div className="app">
       {
         token ?
-          <h1>I am the player</h1>
+          <Player spotify={spotify} />
           : (
             <Login />
           )
