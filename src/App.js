@@ -12,7 +12,7 @@ const spotify = new SpotifyApi()
 function App() {
 
   // { pull a state out } 
-  const[{ token },dispatch] = useStateValue();
+  const [{ token },dispatch] = useStateValue();
 
   // esto me deja correr un codigo cuando algo pase
   // ahora lo estoy dejando para que corra al montar la app
@@ -27,11 +27,11 @@ function App() {
     if(_token) {
       // comunicacion segura con el api
       spotify.setAccessToken(_token);
+
       dispatch({
         type: 'SET_TOKEN',
         token: _token
       })
-
 
       spotify.getMe().then((user) => {
         dispatch ({
@@ -39,9 +39,16 @@ function App() {
           user
         })
       })
-    }
 
-  },[])
+      spotify.getUserPlaylists().then((playlists) => {
+        dispatch ({
+          type: 'SET_PLAYLISTS',
+          playlists
+        })        
+      })
+      console.log(token)
+    }
+  },[{token}, dispatch]);
 
   return (
     <div className="app">

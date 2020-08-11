@@ -10,8 +10,8 @@ const Player = ({ spotify }) => {
             <div className='player__body'>
                 <Sidebar />
                 <Body />
-                <Footer />
             </div>
+            <Footer />
         </div> 
     );
 };
